@@ -10,6 +10,7 @@ export default function navbar() {
             <div className="right">
                 <a className = "link" href = '#landing'>Landing</a>
                 <a className = "link" href = '#drive'>Drive</a>
+                <button className = "signin" href = '#signin'>Log In</button>
             </div>
         </div>
     </div>
