@@ -1,19 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect} from "react";
+import { useCanvas } from "./editorFunctions.js";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import "./editor.scss"
+import "./editor.scss";
+import Editor from "./editorFunctions.js";
 export default function () {
-    const [value, setValue] = useState('');
-    
+    /*const {
+      canvasRef,
+      prepareCanvas,
+      startDrawing,
+      finishDrawing,
+      draw,
+    } = useCanvas();
+  
+    useEffect(() => {
+      prepareCanvas();
+    }, []);
+    */
   return (
     <div className="editor">
-        <ReactQuill 
-            theme="snow" 
-            value={value} 
-            onChange={setValue} 
-            className = "quill"
-            
-        />
+      {/*<ReactQuill 
+              theme="snow" 
+              value={value} 
+              onChange={setValue} 
+              className = "quill"
+              
+          />
+  */}
+        <Editor/>
     </div>
     
   )
