@@ -1,0 +1,11 @@
+.editor{
+    display: flex;
+    
+    justify-content: center;
+    height: 90vh;
+    width: 100vw;
+    .quill{
+        height: 20%;
+        width: 90%;
+    }
+}
