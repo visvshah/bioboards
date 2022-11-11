@@ -1,37 +1,34 @@
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
-const asyncHandler = require('express-async-handler')
-const User = require('../models/userModel')
+
+import userModel from "../Models/userModels.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 
-const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = async (req, res) => {
     const { fname, lname, email, age, password} = req.body
-
+    /*
     if(!fname.length > 0 || !lname.length > 0 ||!email.length > 0 || !password.length > 0 || !age.length > 0) {
         res.status(400)
         throw new Error('Please add all fields')
     }
-
-    // Check if user exists
-    const userExists = await User.findOne({email})
-
-    if(userExists) {
-        res.status(400)
-        throw new Error('User already exists')
-    }
-
+    */
     // Hash password
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(password, salt)
-
+    const hashedPassword = await bcrypt.hash(password, 12)
     // Create user
-    const user = await User.create({
+    const user = await userModel.create({
         fname,
         lname,
         email,
         age,
         password: hashedPassword
     })
+    // Check if user exists
+    const userExists = await user.findOne({email})
+
+    if(userExists) {
+        res.status(400)
+        throw new Error('User already exists')
+    }
 
     if(user) {
         res.status(201).json({
@@ -49,10 +46,10 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     res.json({message: 'Register User'})
-})
+}
 
 
-const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = async (req, res) => {
     const {email, password} = req.body
 
     const user = await User.findOne({email})
@@ -68,9 +65,9 @@ const loginUser = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Invalid credentials')
     }
-})
+}
 
-const getMe = asyncHandler(async (req, res) => {
+export const getMe = async (req, res) => {
     const {_id, name, email } = await User.findById(req.user.id)
 
     res.status(200).json({
@@ -81,17 +78,11 @@ const getMe = asyncHandler(async (req, res) => {
         isOrganizer
     })
     res.json({message: 'User data display'})
-})
+}
 
 //TODO: add env for token encrypt
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: '30d',
     })
-}
-
-module.exports = {
-    registerUser,
-    loginUser,
-    getMe
 }

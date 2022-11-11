@@ -1,21 +1,10 @@
-const express = require('express')
-const colors = require('colors')
-const dotenv = require('dotenv').config()
-const connectDB = require('./config/db')
-const bodyParser = require('body-parser')
-const port = process.env.PORT || 4000;
+import express from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
+import userRoutes from "./Routes/userRoutes.js";
 const app = express();
-const connectDB = async () => {
-    try{
-        //TODO: set mongoDB database and place in env
-        const conn = await mongoose.connect(process.env.MONGO_URI)
 
-        console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);
-    } catch(error) {
-        console.log(error);
-        process.exit(1)
-    }
-}
 app.use(bodyParser.json());
 app.use(express.json({limit:'1mb'}))
 app.use(express.urlencoded({ extended: false}))
@@ -25,9 +14,17 @@ app.use((req, res, next) => {
     next();
 })
 app.use(bodyParser.json())
-connectDB();
-app.use('/api/users', require('./Routes/userRoutes.js'))
+try{
+    const conn = await mongoose.connect("mongodb+srv://VisvShah:VisvShah123@cluster0.umuygpo.mongodb.net/?retryWrites=true&w=majority")
 
-app.use(errorHandler)
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+} catch(error) {
+    console.log("NOPE");
+    console.log(error);
+    process.exit(1)
+}
+app.use('/api/users', userRoutes)
 
-app.listen(port, () => console.log(`Server started on port ${port}`))
+
+
+app.listen(4000, () => console.log(`Server started on port ${4000}`))
