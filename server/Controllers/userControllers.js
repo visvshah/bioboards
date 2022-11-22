@@ -23,7 +23,7 @@ export const registerUser = async (req, res) => {
         password: hashedPassword
     })
     // Check if user exists
-    const userExists = await user.findOne({email})
+    const userExists = await userModel.findOne({email})
 
     if(userExists) {
         res.status(400)
@@ -52,7 +52,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     const {email, password} = req.body
 
-    const user = await User.findOne({email})
+    const user = await userModel.findOne({email})
 
     if(user && (await bcrypt.compare(password, user.password))) {
         res.json({
