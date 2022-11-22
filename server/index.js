@@ -24,7 +24,4 @@ try{
     process.exit(1)
 }
 app.use('/api/users', userRoutes)
-
-
-
 app.listen(4000, () => console.log(`Server started on port ${4000}`))

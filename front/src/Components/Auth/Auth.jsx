@@ -41,7 +41,7 @@ export default function Auth() {
         fName: "",
         lName: "",
         email: "",
-        age: 0,
+        age: "",
         password: ""
     })
 
