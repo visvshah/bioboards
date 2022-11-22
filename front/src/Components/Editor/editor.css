@@ -1,10 +1,7 @@
-.tox .tox-menu.tox-collection.tox-collection--list.tox-selected-menu {
+/**.tox.tox-silver-sink.tox-tinymce-aux{
     z-index: 100000 !important;
 }
-.tox.tox-silver-sink.tox-tinymce-aux{
-    z-index: 100000 !important;
-    left: 0px !important;
-}
+**/
 .holder{
     display: flex;
     flex-direction: column;
