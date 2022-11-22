@@ -13,8 +13,8 @@ app.use(bodyParser.urlencoded({ limit: '5mb', extended: false}));
 
 app.use(cors());
 app.use('/users', userRoutes)
-console.log("URL: " + process.env.CONNECTION_URL);
+console.log("URL: " + process.env.MONGO_URL);
 app.listen(4000, () => console.log(`Server started on port ${4000}`));
-mongoose.connect(process.env.CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(()=> app.listen(4000, ()=> console.log(`Server runnning on port: 4000`)))
     .catch((error)=> console.log(error.message));
