@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { boolean } = require('webidl-conversions')
+import mongoose from 'mongoose';
+
 
 const userSchema = mongoose.Schema({
     fname: {
@@ -28,4 +28,5 @@ const userSchema = mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('User', userSchema)
+const userModel = mongoose.model('userModels', userSchema);
+export default userModel;
