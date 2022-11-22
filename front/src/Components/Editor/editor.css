@@ -1,0 +1,32 @@
+.tox .tox-menu.tox-collection.tox-collection--list.tox-selected-menu {
+    z-index: 100000 !important;
+}
+.tox.tox-silver-sink.tox-tinymce-aux{
+    z-index: 100000 !important;
+    left: 0px !important;
+}
+.holder{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;  
+}
+.save{
+    background-color: #FC4445;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 20px;
+    margin-top: 10px;
+    transition: all 1s ease;
+        
+}
+.save:hover{
+    cursor: pointer;
+    background-color: orange;
+    
+}
