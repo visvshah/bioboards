@@ -5,13 +5,18 @@ import jwt from "jsonwebtoken";
 
 
 export const registerUser = async (req, res) => {
-    const { fname, lname, email, age, password} = req.body
-    /*
+    const { fname, lname, email, age, password} = req.body;
+    console.log("fname: " + fname);
+    console.log("lname: " + lname);
+    console.log("email: " + email);
+    console.log("age: " + age);
+    console.log("password: " + password);
+    /**
     if(!fname.length > 0 || !lname.length > 0 ||!email.length > 0 || !password.length > 0 || !age.length > 0) {
         res.status(400)
         throw new Error('Please add all fields')
     }
-    */
+    **/
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
     // Create user
@@ -20,7 +25,7 @@ export const registerUser = async (req, res) => {
         lname,
         email,
         age,
-        password: hashedPassword
+        password: hashedPassword,
     })
     // Check if user exists
     const userExists = await userModel.findOne({email})
@@ -82,7 +87,7 @@ export const getMe = async (req, res) => {
 
 //TODO: add env for token encrypt
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
+    return jwt.sign({ id }, abc123, {
         expiresIn: '30d',
     })
 }

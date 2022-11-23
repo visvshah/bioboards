@@ -11,6 +11,7 @@ export default function Auth() {
         else{
             sendSignUp()
         }
+
     }
     const sendLogIn = (e) =>{
         fetch("http://localhost:5001/api/users/login", { method: "POST", body: userData, mode: 'cors', contentType: "applicationjson"})
@@ -24,7 +25,8 @@ export default function Auth() {
     }
 
     const sendSignUp = (e) =>{
-        fetch("http://localhost:5001/api/users/", { method: "POST", body: userData, mode: 'no-cors', contentType: "applicationjson"})
+        console.log(userData);
+        fetch("http://localhost:5001/api/users/signup", { method: "POST", body: userData, mode: 'cors', contentType: "applicationjson"})
             .then(res => {
                 return res.json()
             })
