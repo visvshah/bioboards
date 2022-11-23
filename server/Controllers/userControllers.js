@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import userModel from "../Models/userModels.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import express from "express";
 
 
 export const registerUser = asyncHandler(async (req, res) => {
@@ -44,8 +45,6 @@ export const registerUser = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Invalid user data')
     }
-
-    res.json({message: 'Register User'})
 })
 
 
