@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import "./auth.scss"
 
 export default function Auth() {
-    const [logIn, changeLogIn] = useState(true);
+    const [logIn, changeLogIn] = useState(false);
     const handleSubmit = (event) =>{
         event.preventDefault();
         if(logIn){
@@ -14,7 +14,7 @@ export default function Auth() {
 
     }
     const sendLogIn = (e) =>{
-        fetch("http://localhost:5001/api/users/login", { method: "POST", body: userData, mode: 'cors', contentType: "applicationjson"})
+        fetch("http://localhost:5001/api/users/login", { method: "POST", body: JSON.stringify(userData), mode: 'cors', contentType: "application/json"})
             .then(res => {
                 return res.json()
             })
@@ -26,12 +26,12 @@ export default function Auth() {
 
     const sendSignUp = (e) =>{
         console.log(userData);
-        fetch("http://localhost:5001/api/users/signup", { method: "POST", body: userData, mode: 'cors', contentType: "applicationjson"})
+        fetch("http://localhost:5001/api/users/signup", { method: "POST", body: JSON.stringify(userData), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
             .then(res => {
-                return res.json()
+                return res.json();
             })
             .then(data => {
-                localStorage.setItem("token", data.token)
+                localStorage.setItem("token", data.token);
             })
         .catch(e => console.log(e))
     }
