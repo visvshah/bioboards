@@ -7,11 +7,7 @@ import jwt from "jsonwebtoken";
 export const registerUser = asyncHandler(async (req, res) => {
     const { fName, lName, email, age, password} = await req.body;
     console.log(req.body);
-    console.log("fname: " + fName);
-    console.log("lname: " + lName);
-    console.log("email: " + email);
-    console.log("age: " + age);
-    console.log("password: " + password);
+    
     /**
     if(!fname.length > 0 || !lname.length > 0 ||!email.length > 0 || !password.length > 0 || !age.length > 0) {
         res.status(400)
@@ -20,6 +16,12 @@ export const registerUser = asyncHandler(async (req, res) => {
     **/
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
+    // Check if user exists
+    const userExists = await userModel.findOne({email})
+    if(userExists) {
+        res.status(400)
+        throw new Error('User already exists')
+    }
     // Create user
     const user = await userModel.create({
         fName,
@@ -28,14 +30,6 @@ export const registerUser = asyncHandler(async (req, res) => {
         age,
         password: hashedPassword,
     })
-    // Check if user exists
-    const userExists = await userModel.findOne({email})
-
-    if(userExists) {
-        res.status(400)
-        throw new Error('User already exists')
-    }
-
     if(user) {
         res.status(201).json({
             _id: user.id,
@@ -87,7 +81,7 @@ export const getMe = async (req, res) => {
 }
 
 const generateToken = (id) => {
-    return jwt.sign({ id }, abc123, {
+    return jwt.sign({ id }, "abc123", {
         expiresIn: '30d',
     })
 }
