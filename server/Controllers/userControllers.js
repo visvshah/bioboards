@@ -31,6 +31,7 @@ export const registerUser = asyncHandler(async (req, res) => {
         age,
         password: hashedPassword,
     })
+    const userToken = jwt.sign({fName, lName, email, id: user._id}, "profile", {expiresIn: "1h"});
     if(user) {
         res.status(201).json({
             _id: user.id,
@@ -39,7 +40,7 @@ export const registerUser = asyncHandler(async (req, res) => {
             email: user.email,
             age: user.age,
             password: user.password,
-            token: generateToken(user._id)
+            token: userToken,
         })
     } else {
         res.status(400)
@@ -52,13 +53,13 @@ export const loginUser = asyncHandler(async (req, res) => {
     const {email, password} = req.body
 
     const user = await userModel.findOne({email})
-
+    const userToken = jwt.sign({fName, lName, email, id}, "profile", {expiresIn: "1h"});
     if(user && (await bcrypt.compare(password, user.password))) {
         res.json({
             _id: user.id,
             name: user.name,
             email: user.email,
-            token: generateToken(user._id)
+            token: userToken,
         })
     } else {
         res.status(400)
@@ -80,7 +81,8 @@ export const getMe = async (req, res) => {
 }
 
 const generateToken = (id) => {
-    return jwt.sign({ id }, "abc123", {
+    return jwt.sign({id}, "abc123", {
         expiresIn: '30d',
     })
+    
 }

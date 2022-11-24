@@ -14,12 +14,12 @@ export default function Auth() {
 
     }
     const sendLogIn = (e) =>{
-        fetch("http://localhost:5001/api/users/login", { method: "POST", body: JSON.stringify(userData), mode: 'cors', contentType: "application/json"})
+        fetch("http://localhost:5001/api/users/login", { method: "POST", body: JSON.stringify(userData), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
             .then(res => {
                 return res.json()
             })
             .then(data => {
-                localStorage.setItem("token", data.token)
+                localStorage.setItem("profile", JSON.stringify(data));
             })
         .catch(e => console.log(e))
     }
@@ -31,7 +31,8 @@ export default function Auth() {
                 return res.json();
             })
             .then(data => {
-                localStorage.setItem("token", data.token);
+                console.log(data)
+                localStorage.setItem("profile", JSON.stringify(data));
             })
         .catch(e => console.log(e))
     }
