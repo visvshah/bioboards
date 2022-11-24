@@ -32,7 +32,8 @@ export default function Navbar() {
             <a to = "/" href = "/"><button className = "signin" component = {Link} to = "/">Editor</button></a>
                 {user?(
                   <>
-                    <a><button className = "signin" onClick = {logOut}>Sign Out</button></a>
+                    
+                    <a><button className = "signout" onClick = {logOut}>Sign Out</button></a>
                     <div className = "avatar">{user?.fName.charAt(0)}</div>
                   </>
                 ):(
