@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from "react";
 import "./navbar.scss";
-import {Link, useHistory, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import decode from "jwt-decode";
 
 export default function Navbar() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const logOut = () => {
     localStorage.clear();
-    history.push("/auth");
+    navigate('/auth');
     setUser(null);
 }
   useEffect(() => {
@@ -29,9 +29,12 @@ export default function Navbar() {
                 BioBoards
             </div>
             <div className="right">
-                <a className = "link" href = '#landing'>Landing</a>
+            <a to = "/" href = "/"><button className = "signin" component = {Link} to = "/">Editor</button></a>
                 {user?(
-                  <div className = "avatar">{user?.fName.charAt(0)}</div>
+                  <>
+                    <a><button className = "signin" onClick = {logOut}>Sign Out</button></a>
+                    <div className = "avatar">{user?.fName.charAt(0)}</div>
+                  </>
                 ):(
                   <a to = "/auth" href = "/auth"><button className = "signin" component = {Link} to = "/auth">Log In</button></a>
                 )}
