@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import userModel from "../Models/userModels.js";
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import express from "express";
@@ -79,16 +80,16 @@ export const loginUser = asyncHandler(async (req, res) => {
 })
 
 export const updateBoards = async (req, res) => {
-    const {id: _id, board1, board2, board3} = req.body;
-    if (!mongoose.Types.ObjectId.isValid(id)) return response.status(404).send(`No list with id: ${id}`)
-    const user = await userModel.findById(id);
+    const {board1, board2, board3, _id} = req.body;
+    if (!mongoose.Types.ObjectId.isValid(_id)) return response.status(404).send(`No list with id: ${_id}`)
+    const user = await userModel.findById(_id);
     if(user) {
         user.board1 = board1;
         user.board2 = board2;
         user.board3 = board3;
-        const newUser = await userModel.findByIdAndUpdate(id, user, {new:true});
+        const newUser = await userModel.findByIdAndUpdate(_id, user, {new:true});
         res.status(200).json({
-            newList
+            newUser
         })
     }
     else {

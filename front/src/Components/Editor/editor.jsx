@@ -1,12 +1,43 @@
-import React, { useRef} from "react";
+import React, { useRef, useState} from "react";
 import { Editor } from '@tinymce/tinymce-react';
 import initialVal from "./initialValue";
 import "./editor.css";
 
 export default function () {
     const editorRef = useRef(null);
+    const user =  JSON.parse(localStorage.getItem("profile"));
+    const [boards, changeBoards] = useState({
+      _id: user._id,
+      board1: initialVal,
+      board2: initialVal,
+      board3: initialVal,
+    })
+    const [boardNum, setBoardNum] = useState(1);
+    const updateBoards = (e) =>{
+      console.log(boards);
+      fetch("http://localhost:5001/api/users/boards", { method: "PATCH", body: JSON.stringify(boards), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
+          .then(res => {
+              return res.json()
+          })
+          .then(data => {
+              
+          })
+      .catch(e => {
+          console.log(e)
+      })
+  }
     const log = () => {
       if (editorRef.current) {
+          if(boardNum === 1) {
+            boards.board1 = editorRef.current.getContent();
+          }
+          if(boardNum === 2) {
+            boards.board2 = editorRef.current.getContent();
+          }
+          if(boardNum === 3) {
+            boards.board3 = editorRef.current.getContent();
+          }
+          updateBoards();
           console.log(editorRef.current.getContent());
       }
     };
