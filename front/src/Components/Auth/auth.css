@@ -70,3 +70,16 @@ button{
     justify-content: center;
     flex-direction: column;
 }
+.error {
+    display: flex;
+    margin-top: 20px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: all 1s ease;
+}

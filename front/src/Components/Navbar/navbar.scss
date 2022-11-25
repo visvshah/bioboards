@@ -29,18 +29,45 @@
             background-color: #FC4445;
             border: none;
             color: white;
-            padding: 15px 32px;
+            padding: 100% 30px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
             border-radius: 20px;
-            margin-right: 100px;
             transition: all 1s ease;
             &:hover{
                 cursor: pointer;
                 background-color: orange;
             }
+        }
+        .signout{
+            background-color: #FC4445;
+            border: none;
+            color: white;
+            padding: 100% 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 20px;
+            transition: all 1s ease;
+            margin-right: 10px;
+            &:hover{
+                cursor: pointer;
+                background-color: orange;
+            }
+        }
+        .avatar{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: black;
+            color: white;
+            margin-right: 10px;
         }
     }
 }

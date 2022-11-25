@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 
 
 const userSchema = mongoose.Schema({
-    fname: {
+    fName: {
         type: String,
         required: [true, 'Please add a first name']
     },
-    lname: {
+    lName: {
         type: String,
         required: [true, 'Please add a last name']
     },
@@ -23,6 +23,21 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please add a password']
     }
+    /** ,
+    board1: {
+        type: String,
+        required: [false]
+    },
+    board2: {
+        type: String,
+        required: [false],
+        unique: true
+    },
+    board3: {
+        type: String,
+        required: [false]
+    },
+    **/
 },
 {
     timestamps: true

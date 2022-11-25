@@ -1,8 +1,11 @@
 import React, {useState} from "react";
-import "./auth.scss"
+import "./auth.css"
+import {useNavigate} from "react-router-dom";
 
 export default function Auth() {
-    const [logIn, changeLogIn] = useState(true);
+    const [logIn, changeLogIn] = useState(false);
+    const [error, setError] = useState(false);
+    const navigate = useNavigate();
     const handleSubmit = (event) =>{
         event.preventDefault();
         if(logIn){
@@ -11,27 +14,39 @@ export default function Auth() {
         else{
             sendSignUp()
         }
+
     }
     const sendLogIn = (e) =>{
-        fetch("http://localhost:4000/api/users/login", { method: "POST", body: userData, mode: 'cors', contentType: "applicationjson"})
+        fetch("http://localhost:5001/api/users/login", { method: "POST", body: JSON.stringify(userData), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
             .then(res => {
                 return res.json()
             })
             .then(data => {
-                localStorage.setItem("token", data.token)
+                setError(false);
+                localStorage.setItem("profile", JSON.stringify(data));
+                navigate('/');
             })
-        .catch(e => console.log(e))
+        .catch(e => {
+            console.log(e)
+            setError(true);
+        })
     }
 
     const sendSignUp = (e) =>{
-        fetch("http://localhost:4000/api/users/", { method: "POST", body: userData, mode: 'no-cors', contentType: "applicationjson"})
+        console.log(userData);
+        fetch("http://localhost:5001/api/users/signup", { method: "POST", body: JSON.stringify(userData), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
             .then(res => {
-                return res.json()
+                return res.json();
             })
             .then(data => {
-                localStorage.setItem("token", data.token)
+                setError(false);
+                localStorage.setItem("profile", JSON.stringify(data));
+                navigate('/');
             })
-        .catch(e => console.log(e))
+        .catch(e => {
+            setError(true);
+            console.log(e)
+        })
     }
 
     const changeMode = () =>{
@@ -62,6 +77,11 @@ return (
                 
                 <input placeholder = "Enter Password" id = "password" name = "password" type ="password" onChange = {(e) => setUserData({...userData, password: e.target.value})}/>
                 <button className = "submitButton" type="submit" onClick = {handleSubmit}>Submit</button>
+                {error && (
+                    <>
+                        <div className = "error">Error!</div>
+                    </>
+                )}
             </form>
             <button className = "changeMode" onClick = {changeMode}>{logIn ? "Sign Up Instead" : "Log In instead"}</button>
         </div>
