@@ -28,6 +28,9 @@ export const registerUser = asyncHandler(async (req, res) => {
         email,
         age,
         password: hashedPassword,
+        board1: "",
+        board2: "",
+        board3: "",
     })
     const userToken = jwt.sign({fName, lName, email, id: user._id}, "profile", {expiresIn: "1h"});
     if(user) {
@@ -38,6 +41,9 @@ export const registerUser = asyncHandler(async (req, res) => {
             email: user.email,
             age: user.age,
             password: user.password,
+            board1: user.board1,
+            board2: user.board2,
+            board3: user.board3,
             token: userToken,
         })
         
@@ -61,6 +67,9 @@ export const loginUser = asyncHandler(async (req, res) => {
             email: user.email,
             age: user.age,
             password: user.password,
+            board1: user.board1,
+            board2: user.board2,
+            board3: user.board3,
             token: userToken,
         })
     } else {
@@ -86,5 +95,5 @@ const generateToken = (id) => {
     return jwt.sign({id}, "abc123", {
         expiresIn: '30d',
     })
-    
+
 }

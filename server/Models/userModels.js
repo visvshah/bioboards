@@ -22,8 +22,7 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Please add a password']
-    }
-    /** ,
+    },
     board1: {
         type: String,
         required: [false]
@@ -36,8 +35,7 @@ const userSchema = mongoose.Schema({
     board3: {
         type: String,
         required: [false]
-    },
-    **/
+    }
 },
 {
     timestamps: true
