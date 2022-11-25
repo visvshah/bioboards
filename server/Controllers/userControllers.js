@@ -73,22 +73,29 @@ export const loginUser = asyncHandler(async (req, res) => {
             token: userToken,
         })
     } else {
-        res.status(400)
-        throw new Error('Invalid credentials')
+        res.status(400);
+        throw new Error('Invalid credentials');
     }
 })
 
-export const getMe = async (req, res) => {
-    const {_id, name, email } = await User.findById(req.user.id)
-
-    res.status(200).json({
-        id: _id,
-        name,
-        email,
-        school,
-        isOrganizer
-    })
-    res.json({message: 'User data display'})
+export const updateBoards = async (req, res) => {
+    const {id: _id, board1, board2, board3} = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id)) return response.status(404).send(`No list with id: ${id}`)
+    const user = await userModel.findById(id);
+    if(user) {
+        user.board1 = board1;
+        user.board2 = board2;
+        user.board3 = board3;
+        const newUser = await userModel.findByIdAndUpdate(id, user, {new:true});
+        res.status(200).json({
+            newList
+        })
+    }
+    else {
+        res.status(400);
+        throw new Error('Invalid credentials');
+    }
+    
 }
 
 const generateToken = (id) => {
