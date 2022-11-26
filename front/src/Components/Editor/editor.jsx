@@ -5,6 +5,13 @@ import "./editor.css";
 
 export default function () {
     const user = JSON.parse(localStorage.getItem("profile"));
+    if(!user) {
+      return (
+        <div className="holder">
+          <h1 className="logInFirst">Log in First!</h1>
+        </div>
+      )
+    }
     const [linkHidden, changeLinkHidden] = useState(true);
     const [boards, changeBoards] = useState({
       _id: user._id,
@@ -58,11 +65,10 @@ export default function () {
         setBoardNum(boardNumber);
       }
     }
-    
   return (
     
     <div className="holder">
-      <div className="leftSide">
+        <div className="leftSide">
         <h1 className="header1">Select which board</h1>
         <div className="buttons">
           <button className = {'board ' + (boardNum === 1 && 'active')} onClick={() => boardHandler(1)}>1</button>
@@ -86,7 +92,6 @@ export default function () {
       {boardNum === 3 && (
         <Board props = {{initialVal:boards.board3, boardNum:boardNum, boards:boards}}/>
       )}
-      
     </div>
     
   )

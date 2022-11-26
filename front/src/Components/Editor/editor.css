@@ -109,3 +109,6 @@
 .hidden{
     opacity: 0;
 }
+.logInFirst{
+    color: white;
+}
