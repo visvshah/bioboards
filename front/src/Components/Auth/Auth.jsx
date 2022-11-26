@@ -33,7 +33,6 @@ export default function Auth() {
     }
 
     const sendSignUp = (e) =>{
-        console.log(userData);
         fetch("http://localhost:5001/api/users/signup", { method: "POST", body: JSON.stringify(userData), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
             .then(res => {
                 return res.json();
