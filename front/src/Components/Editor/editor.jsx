@@ -2,50 +2,63 @@ import React, { useRef, useState, useEffect} from "react";
 import Board from "./board";
 import initialValue from "./initialValue";
 import "./editor.css";
-import { isRouteErrorResponse } from "react-router-dom";
+//import { useLocation} from "react-router-dom";
 
 export default function () {
     const user = JSON.parse(localStorage.getItem("profile"));
+    //const location = useLocation();
+    //const [linkHidden, changeLinkHidden] = useState(true);
     const [boards, changeBoards] = useState({
       _id: user._id,
-      board1: initialValue,
+      board1: "",
       board2: "",
       board3: "",
     })
-    const [boardNum, setBoardNum] = useState(1);
+    const [boardNum, setBoardNum] = useState(0);
     
     
     //Fetches the boards that are saved for the user in the MongoDB databse
-    const getBoards = (e) =>{
+    const getBoards = (boardNumber) =>{
       console.log(boards);
       fetch("http://localhost:5001/api/users/getboards", { method: "PATCH", body: JSON.stringify(boards), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
           .then(res => {
               return res.json()
           })
           .then(data => {
-              console.log(data);
-              boards.board1 = data.board1;
-              boards.board2 = data.board2;
-              boards.board3 = data.board3;
+              if(data.board1.length == 0) {
+                boards.board1 = initialValue;
+              }
+              else {
+                boards.board1 = data.board1;
+              }
+              if(data.board2.length == 0) {
+                boards.board2 = initialValue;
+              }
+              else {
+                boards.board2 = data.board2;
+              }
+              if(data.board3.length == 0) {
+                boards.board3 = initialValue;
+              }
+              else {
+                boards.board3 = data.board3;
+              }
+              setBoardNum(boardNumber);
+              console.log("PART 1");
           })
       .catch(e => {
           console.log(e)
       })
     }
     //Sets the initialValue of the Editor based on the board they are currently working on
-    const getEditorValue = () => {
-      console.log("Getting editor Initial Value")
-      getBoards();
-      if(boardNum === 1) {
-        return boards.board1;
+    const boardHandler = (boardNumber) => {
+      //Sepearted because setBoardNum(boardNumber) runs inside getBoards or else it will run before getBoards finishes
+      if(boardNum === 0) {
+        getBoards(boardNumber);
       }
-      if(boardNum === 2) {
-        return boards.board2;
+      else {
+        setBoardNum(boardNumber);
       }
-      if(boardNum === 3) {
-        return boards.board3;
-      }
-      return "ERROR";
     }
     
   return (
@@ -54,15 +67,21 @@ export default function () {
       <div className="leftSide">
         <h1 className="header1">Select which board</h1>
         <div className="buttons">
-          <button className = {'board ' + (boardNum === 1 && 'active')} onClick={console.log()}>1</button>
-          <button className = {'board ' + (boardNum === 2 && 'active')} onClick={console.log()}>2</button>
-          <button className = {'board ' + (boardNum === 3 && 'active')} onClick={console.log()}>3</button>
+          <button className = {'board ' + (boardNum === 1 && 'active')} onClick={() => boardHandler(1)}>1</button>
+          <button className = {'board ' + (boardNum === 2 && 'active')} onClick={() => boardHandler(2)}>2</button>
+          <button className = {'board ' + (boardNum === 3 && 'active')} onClick={() => boardHandler(3)}>3</button>
         </div>
-        
-      {//setBoardNum(1)
-      }
       </div>
-      <Board props = {{initialVal:"<p>test</p>", boardNum:boardNum}}/>
+      {boardNum === 1 && (
+        <Board props = {{initialVal:boards.board1, boardNum:boardNum, boards:boards}}/>
+      )}
+      {boardNum === 2 && (
+        <Board props = {{initialVal:boards.board2, boardNum:boardNum, boards:boards}}/>
+      )}
+      {boardNum === 3 && (
+        <Board props = {{initialVal:boards.board3, boardNum:boardNum, boards:boards}}/>
+      )}
+      
     </div>
     
   )
