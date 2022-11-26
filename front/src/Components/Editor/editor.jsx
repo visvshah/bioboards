@@ -1,13 +1,11 @@
-import React, { useRef, useState, useEffect} from "react";
+import React, { useState} from "react";
 import Board from "./board";
 import initialValue from "./initialValue";
 import "./editor.css";
-//import { useLocation} from "react-router-dom";
 
 export default function () {
     const user = JSON.parse(localStorage.getItem("profile"));
-    //const location = useLocation();
-    //const [linkHidden, changeLinkHidden] = useState(true);
+    const [linkHidden, changeLinkHidden] = useState(true);
     const [boards, changeBoards] = useState({
       _id: user._id,
       board1: "",
@@ -25,19 +23,19 @@ export default function () {
               return res.json()
           })
           .then(data => {
-              if(data.board1.length == 0) {
+              if(data.board1.length === 0) {
                 boards.board1 = initialValue;
               }
               else {
                 boards.board1 = data.board1;
               }
-              if(data.board2.length == 0) {
+              if(data.board2.length === 0) {
                 boards.board2 = initialValue;
               }
               else {
                 boards.board2 = data.board2;
               }
-              if(data.board3.length == 0) {
+              if(data.board3.length === 0) {
                 boards.board3 = initialValue;
               }
               else {
@@ -71,6 +69,13 @@ export default function () {
           <button className = {'board ' + (boardNum === 2 && 'active')} onClick={() => boardHandler(2)}>2</button>
           <button className = {'board ' + (boardNum === 3 && 'active')} onClick={() => boardHandler(3)}>3</button>
         </div>
+        {boardNum !== 0 && (
+          <div className="boardLink">
+            <button className = "linkButton" onClick={() => changeLinkHidden(!linkHidden)}>Share Link</button>
+            <h4 className={'link ' + (linkHidden && 'hidden')}>{"http://localhost:3000/" + user.email + "/" + boardNum}</h4>
+          </div>
+          
+        )}
       </div>
       {boardNum === 1 && (
         <Board props = {{initialVal:boards.board1, boardNum:boardNum, boards:boards}}/>

@@ -1,11 +1,10 @@
-import React, { useRef, useState, useEffect} from "react";
+import React, { useRef} from "react";
 import { Editor } from '@tinymce/tinymce-react';
 import "./editor.css";
-import initialValue from "./initialValue";
+
 
 function Board({props}) {
     const editorRef = useRef(null);
-    const user = JSON.parse(localStorage.getItem("profile"));
     //Calls and updates the user board based on which of the user's three boards they are working on
     const saveButton = () => {
         console.log("CURRENT CONTENT:");
