@@ -4,9 +4,11 @@
 .authPage{
     display: flex;
     align-items: center;
+    transition: all 1s ease;
     width: 100vw;
     height: 90vh;
     flex-direction: column;
+    padding-top: 50px;
 }
 input{
     margin-bottom: 10px;
@@ -23,6 +25,7 @@ input{
     align-items: center;
     flex-direction: column;
     transition: all 1s ease;
+    margin-top: 20px;
 }
 .select {
     cursor: pointer;
@@ -59,10 +62,16 @@ input{
     position: absolute;
     bottom: 50px;
 }
+
 button{
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 1s ease;
+}
+button:hover{
+    cursor: pointer;
+    background-color: gray;
 }
 .dropDown{
     display: flex;
@@ -75,9 +84,7 @@ button{
     margin-top: 20px;
     background-color: red;
     color: white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    padding: 10px;
     align-items: center;
     justify-content: center;
     font-weight: 700;
