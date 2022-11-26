@@ -2,10 +2,10 @@ import React, { useRef, useState, useEffect} from "react";
 import Board from "./board";
 import initialValue from "./initialValue";
 import "./editor.css";
+import { isRouteErrorResponse } from "react-router-dom";
 
 export default function () {
     const user = JSON.parse(localStorage.getItem("profile"));
-    const editorRef = useRef(null);
     const [boards, changeBoards] = useState({
       _id: user._id,
       board1: initialValue,
@@ -13,40 +13,8 @@ export default function () {
       board3: "",
     })
     const [boardNum, setBoardNum] = useState(1);
-    //Updates the board values in the MongoDB cluster
-    const updateBoards = (e) =>{
-      console.log(boards);
-      fetch("http://localhost:5001/api/users/boards", { method: "PATCH", body: JSON.stringify(boards), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
-          .then(res => {
-              return res.json()
-          })
-          .then(data => {
-              console.log("UPDATED")
-              console.log("Boards:")
-              console.log(boards)
-              console.log("New User:")
-              console.log(data)
-          })
-      .catch(e => {
-          console.log(e)
-      })
-    }
-    //Calls and updates the user board based on which of the user's three boards they are working on
-    const saveButton = () => {
-      console.log(editorRef.current.getContent());
-      if (editorRef.current) {
-          if(boardNum === 1) {
-            changeBoards({...boards, board1:editorRef.current.getContent()});
-          }
-          if(boardNum === 2) {
-            changeBoards({...boards, board2:editorRef.current.getContent()});
-          }
-          if(boardNum === 3) {
-            changeBoards({...boards, board3:editorRef.current.getContent()});
-          }
-          updateBoards();
-      }
-    };
+    
+    
     //Fetches the boards that are saved for the user in the MongoDB databse
     const getBoards = (e) =>{
       console.log(boards);
@@ -94,7 +62,7 @@ export default function () {
       {//setBoardNum(1)
       }
       </div>
-      <Board initialVal = {"<p>test</p>"} editorRef = {editorRef}/>
+      <Board props = {{initialVal:"<p>test</p>", boardNum:boardNum}}/>
     </div>
     
   )

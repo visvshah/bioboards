@@ -1,8 +1,54 @@
 import React, { useRef, useState, useEffect} from "react";
 import { Editor } from '@tinymce/tinymce-react';
 import "./editor.css";
+import initialValue from "./initialValue";
 
-function Board(initialVal, editorRef) {
+function Board({props}) {
+    const editorRef = useRef(null);
+    const user = JSON.parse(localStorage.getItem("profile"));
+    const [boards, changeBoards] = useState({
+        _id: user._id,
+        board1: "",
+        board2: "",
+        board3: "",
+    })
+    //Calls and updates the user board based on which of the user's three boards they are working on
+    const saveButton = () => {
+        console.log("CURRENT CONTENT:");
+        console.log(editorRef.current.getContent());
+        console.log("BOARD NUM:");
+        console.log(props.boardNum);
+        if (editorRef.current) {
+            if(props.boardNum === 1) {
+                boards.board1 = editorRef.current.getContent();
+            }
+            if(props.boardNum === 2) {
+                boards.board2 = editorRef.current.getContent();
+            }
+            if(props.boardNum === 3) {
+                boards.board3 = editorRef.current.getContent();
+            }
+            updateBoards();
+        }
+    };
+    //Updates the board values in the MongoDB cluster
+    const updateBoards = (e) =>{
+        console.log(boards);
+        fetch("http://localhost:5001/api/users/boards", { method: "PATCH", body: JSON.stringify(boards), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                console.log("UPDATED")
+                console.log("Boards:")
+                console.log(boards)
+                console.log("New User:")
+                console.log(data)
+            })
+        .catch(e => {
+            console.log(e)
+        })
+    }
     return (
         <div className="rightSide">
             <Editor
@@ -10,11 +56,11 @@ function Board(initialVal, editorRef) {
                 tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                     onInit={(evt, editor) => {
                             editorRef.current = editor;
-                            console.log(initialVal.initialVal);
+                            console.log(props.initialVal);
                         }
                         
                     }
-                initialValue = {initialVal.initialVal}
+                initialValue = {props.initialVal}
                 init={{
                     height: 600,
                     width: 1000,
@@ -54,4 +100,4 @@ function Board(initialVal, editorRef) {
         
     )
 }
-export default React.forwardRef(Board);
+export default Board;

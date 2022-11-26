@@ -79,7 +79,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 
 export const updateBoards = asyncHandler(async (req, res) => {
     const {board1, board2, board3, _id} = req.body;
-    if (!mongoose.Types.ObjectId.isValid(_id)) return response.status(404).send(`No list with id: ${_id}`)
+    if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send(`No user with id: ${_id}`)
     const user = await userModel.findById(_id);
     if(user) {
         user.board1 = board1;
