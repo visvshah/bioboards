@@ -120,15 +120,19 @@ export const findBoard = asyncHandler(async (req, res) => {
     const user = await userModel.findById(id);
     if(user) {
         console.log(boardNumber);
-        if(boardNumber === 1) {
+        if(boardNumber == 1) {
+            console.log("Sent 1");
             res.status(200).json(user.board1);
         }
-        else if(boardNumber === 2) {
+        else if(boardNumber == 2) {
+            console.log("Sent 2");
             res.status(200).json(user.board2);
         }
-        else {
+        else if(boardNumber == 3){
+            console.log("Sent 3");
             res.status(200).json(user.board3);
         }
+        console.log("NONE");
         
     } else{
         res.status(400);

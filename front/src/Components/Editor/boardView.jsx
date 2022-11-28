@@ -1,6 +1,7 @@
 import React, { useRef, useState} from "react";
 import { Editor } from '@tinymce/tinymce-react';
 import { useParams } from 'react-router-dom';
+import "./editor.css";
 
 function BoardView() {
     const { user, boardNumber } = useParams();
@@ -11,7 +12,6 @@ function BoardView() {
 
     //Finds the board based on the given url
     const findBoard = (e) =>{
-        console.log("1")
         fetch("http://localhost:5001/api/users/findBoard", { method: "PATCH", body: JSON.stringify({id: user, boardNumber:boardNumber}), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
             .then(res => {
                 console.log("2")
@@ -27,7 +27,7 @@ function BoardView() {
     }
     
     return (
-        <div className="rightSide">
+        <div className="holder">
             <Editor
                 className = "editor"
                 tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
@@ -69,7 +69,9 @@ function BoardView() {
                         }
                     },
                     image_uploadtab: false,
-                    block_formats: 'Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3'
+                    block_formats: 'Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3',
+                    toolbar: false,
+                    disabled:true,
                 }}
             />
         </div>
