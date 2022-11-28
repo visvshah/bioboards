@@ -4,45 +4,27 @@ import { useParams } from 'react-router-dom';
 
 
 function BoardView({props}) {
-    const { user } = useParams();
+    const { user, boardNumber } = useParams();
     const editorRef = useRef(null);
     //Calls and updates the user board based on which of the user's three boards they are working on
-    const saveButton = () => {
-        console.log("CURRENT CONTENT:");
-        console.log(editorRef.current.getContent());
-        console.log("BOARD NUM:");
-        console.log(props.boardNum);
-        if (editorRef.current) {
-            if(props.boardNum === 1) {
-                props.boards.board1 = editorRef.current.getContent();
-            }
-            if(props.boardNum === 2) {
-                props.boards.board2 = editorRef.current.getContent();
-            }
-            if(props.boardNum === 3) {
-                props.boards.board3 = editorRef.current.getContent();
-            }
-            updateBoards();
-        }
-    };
-    //Updates the board values in the MongoDB cluster
-    const updateBoards = (e) =>{
-        console.log(props.boards);
-        fetch("http://localhost:5001/api/users/boards", { method: "PATCH", body: JSON.stringify(props.boards), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
+
+    //Finds the board based on the given url
+    const findBoard = (e) =>{
+        console.log("1")
+        fetch("http://localhost:5001/api/users/findBoard", { method: "PATCH", body: JSON.stringify({id: user, boardNumber:boardNumber}), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
             .then(res => {
+                console.log("2")
                 return res.json()
             })
             .then(data => {
-                console.log("UPDATED")
-                console.log("Boards:")
-                console.log(props.boards)
-                console.log("New User:")
-                console.log(data)
+                console.log(data);
+                return data;
             })
         .catch(e => {
             console.log(e)
         })
     }
+    const boardContent = findBoard();
     return (
         <div className="rightSide">
             <Editor
@@ -50,11 +32,10 @@ function BoardView({props}) {
                 tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                     onInit={(evt, editor) => {
                             editorRef.current = editor;
-                            console.log(props.initialVal);
                         }
                         
                     }
-                initialValue = {`<p>${(user)}</p>`}
+                initialValue = {boardContent}
                 init={{
                     height: 600,
                     width: 1000,
@@ -89,7 +70,6 @@ function BoardView({props}) {
                     block_formats: 'Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3'
                 }}
             />
-            <button className = 'save' onClick={saveButton}>Save</button>
         </div>
         
     )
