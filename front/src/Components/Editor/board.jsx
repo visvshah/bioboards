@@ -49,7 +49,6 @@ function Board({props}) {
                 tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                     onInit={(evt, editor) => {
                             editorRef.current = editor;
-                            console.log(props.initialVal);
                         }
                         
                     }

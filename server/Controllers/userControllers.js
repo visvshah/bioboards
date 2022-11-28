@@ -127,7 +127,7 @@ export const findBoard = asyncHandler(async (req, res) => {
             res.status(200).json(user.board2);
         }
         else {
-            res.status(200).json(user.board2);
+            res.status(200).json(user.board3);
         }
         
     } else{

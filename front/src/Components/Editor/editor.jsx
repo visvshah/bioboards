@@ -22,7 +22,7 @@ export default function () {
     const [boardNum, setBoardNum] = useState(0);
     
     
-    //Fetches the boards that are saved for the user in the MongoDB databse
+    //Fetches the boards that are saved for the user in the MongoDB databse, if board is empty, it replaces with deafult value
     const getBoards = (boardNumber) =>{
       console.log(boards);
       fetch("http://localhost:5001/api/users/getboards", { method: "PATCH", body: JSON.stringify(boards), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
