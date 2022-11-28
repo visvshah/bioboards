@@ -55,6 +55,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 
 
 export const loginUser = asyncHandler(async (req, res) => {
+
     const {email, password} = req.body
     const user = await userModel.findOne({email})
     if(user && (await bcrypt.compare(password, user.password))) {
@@ -97,8 +98,9 @@ export const updateBoards = asyncHandler(async (req, res) => {
     
 })
 export const getBoards = asyncHandler(async (req, res) => {
+    
     const {_id} = req.body;
-    if (!mongoose.Types.ObjectId.isValid(_id)) return response.status(404).send(`No list with id: ${_id}`)
+    if (!mongoose.Types.ObjectId.isValid(_id)) return response.status(404).send(`No user with id: ${_id}`)
     const user = await userModel.findById(_id);
     if(user) {
         const boards = {
@@ -112,7 +114,31 @@ export const getBoards = asyncHandler(async (req, res) => {
         throw new Error('User not Found');
     }
 })
-
+export const findBoard = asyncHandler(async (req, res) => {
+    const {id, boardNumber} = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id)) return response.status(404).send(`No user with id: ${id}`)
+    const user = await userModel.findById(id);
+    if(user) {
+        console.log(boardNumber);
+        if(boardNumber == 1) {
+            console.log("Sent 1");
+            res.status(200).json(user.board1);
+        }
+        else if(boardNumber == 2) {
+            console.log("Sent 2");
+            res.status(200).json(user.board2);
+        }
+        else if(boardNumber == 3){
+            console.log("Sent 3");
+            res.status(200).json(user.board3);
+        }
+        console.log("NONE");
+        
+    } else{
+        res.status(400);
+        throw new Error('User not Found');
+    }
+})
 const generateToken = (id) => {
     return jwt.sign({id}, "abc123", {
         expiresIn: '30d',

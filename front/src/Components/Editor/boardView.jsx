@@ -1,58 +1,43 @@
-import React, { useRef} from "react";
+import React, { useRef, useState} from "react";
 import { Editor } from '@tinymce/tinymce-react';
+import { useParams } from 'react-router-dom';
 import "./editor.css";
 
-
-function Board({props}) {
+function BoardView() {
+    const { user, boardNumber } = useParams();
+    const [boardString, setBoardString] = useState("<p>Loading...</p>");
     const editorRef = useRef(null);
+    
     //Calls and updates the user board based on which of the user's three boards they are working on
-    const saveButton = () => {
-        console.log("CURRENT CONTENT:");
-        console.log(editorRef.current.getContent());
-        console.log("BOARD NUM:");
-        console.log(props.boardNum);
-        if (editorRef.current) {
-            if(props.boardNum === 1) {
-                props.boards.board1 = editorRef.current.getContent();
-            }
-            if(props.boardNum === 2) {
-                props.boards.board2 = editorRef.current.getContent();
-            }
-            if(props.boardNum === 3) {
-                props.boards.board3 = editorRef.current.getContent();
-            }
-            updateBoards();
-        }
-    };
-    //Updates the board values in the MongoDB cluster
-    const updateBoards = (e) =>{
-        console.log(props.boards);
-        fetch("http://localhost:5001/api/users/boards", { method: "PATCH", body: JSON.stringify(props.boards), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
+
+    //Finds the board based on the given url
+    const findBoard = (e) =>{
+        fetch("http://localhost:5001/api/users/findBoard", { method: "PATCH", body: JSON.stringify({id: user, boardNumber:boardNumber}), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
             .then(res => {
+                console.log("2")
                 return res.json()
             })
             .then(data => {
-                console.log("UPDATED")
-                console.log("Boards:")
-                console.log(props.boards)
-                console.log("New User:")
-                console.log(data)
+                console.log(data);
+                setBoardString(data);
             })
         .catch(e => {
             console.log(e)
         })
     }
+    
     return (
-        <div className="rightSide">
+        <div className="holder">
             <Editor
                 className = "editor"
                 tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                     onInit={(evt, editor) => {
                             editorRef.current = editor;
+                            findBoard();
                         }
                         
                     }
-                initialValue = {props.initialVal}
+                initialValue = {boardString}
                 init={{
                     height: 600,
                     width: 1000,
@@ -84,12 +69,13 @@ function Board({props}) {
                         }
                     },
                     image_uploadtab: false,
-                    block_formats: 'Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3'
+                    block_formats: 'Paragraph=p; Header 1=h1; Header 2=h2; Header 3=h3',
+                    toolbar: false,
+                    disabled:true,
                 }}
             />
-            <button className = 'save' onClick={saveButton}>Save</button>
         </div>
         
     )
 }
-export default Board;
+export default BoardView;

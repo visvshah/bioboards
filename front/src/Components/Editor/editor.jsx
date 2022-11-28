@@ -22,7 +22,7 @@ export default function () {
     const [boardNum, setBoardNum] = useState(0);
     
     
-    //Fetches the boards that are saved for the user in the MongoDB databse
+    //Fetches the boards that are saved for the user in the MongoDB databse, if board is empty, it replaces with deafult value
     const getBoards = (boardNumber) =>{
       console.log(boards);
       fetch("http://localhost:5001/api/users/getboards", { method: "PATCH", body: JSON.stringify(boards), mode: 'cors', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},contentType: "application/json"})
@@ -69,7 +69,7 @@ export default function () {
     
     <div className="holder">
         <div className="leftSide">
-        <h1 className="header1">Select which board</h1>
+        <h1 className="header1">Select which Board</h1>
         <div className="buttons">
           <button className = {'board ' + (boardNum === 1 && 'active')} onClick={() => boardHandler(1)}>1</button>
           <button className = {'board ' + (boardNum === 2 && 'active')} onClick={() => boardHandler(2)}>2</button>
@@ -77,8 +77,8 @@ export default function () {
         </div>
         {boardNum !== 0 && (
           <div className="boardLink">
-            <button className = "linkButton" onClick={() => changeLinkHidden(!linkHidden)}>Share Link</button>
-            <h4 className={'link ' + (linkHidden && 'hidden')}>{"http://localhost:3000/" + user.email + "/" + boardNum}</h4>
+            <button className = {'linkButton ' + (linkHidden && 'active2')} onClick={() => changeLinkHidden(!linkHidden)}>Share Link</button>
+            <h5 className={'link ' + (linkHidden && 'hidden')}>{"http://localhost:3000/" + user._id + "/" + boardNum}</h5>
           </div>
           
         )}

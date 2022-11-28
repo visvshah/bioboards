@@ -99,6 +99,9 @@
     margin-left: 20px;
     transition: all 1s ease;
 }
+.active2{
+    margin-left: 365px;
+}
 .link{
     margin-top: 20px;
     margin-left: 10px;
