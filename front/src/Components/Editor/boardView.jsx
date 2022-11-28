@@ -1,11 +1,12 @@
-import React, { useRef} from "react";
+import React, { useRef, useState} from "react";
 import { Editor } from '@tinymce/tinymce-react';
 import { useParams } from 'react-router-dom';
 
-
-function BoardView({props}) {
+function BoardView() {
     const { user, boardNumber } = useParams();
+    const [boardString, setBoardString] = useState("<p>Loading...</p>");
     const editorRef = useRef(null);
+    
     //Calls and updates the user board based on which of the user's three boards they are working on
 
     //Finds the board based on the given url
@@ -18,13 +19,13 @@ function BoardView({props}) {
             })
             .then(data => {
                 console.log(data);
-                return data;
+                setBoardString(data);
             })
         .catch(e => {
             console.log(e)
         })
     }
-    const boardContent = findBoard();
+    
     return (
         <div className="rightSide">
             <Editor
@@ -32,10 +33,11 @@ function BoardView({props}) {
                 tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                     onInit={(evt, editor) => {
                             editorRef.current = editor;
+                            findBoard();
                         }
                         
                     }
-                initialValue = {boardContent}
+                initialValue = {boardString}
                 init={{
                     height: 600,
                     width: 1000,
